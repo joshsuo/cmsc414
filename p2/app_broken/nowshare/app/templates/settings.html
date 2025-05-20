@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div>
+<br />
+<br />
+{% if success == True %}
+Successful update!<br />
+{% elif success == False %}
+Failed to update!<br />
+{% endif %}
+
+
+
+<div class="main-login main-center">
+    <form class="form-horizontal" method="post" action="update_profile">
+        
+        <div class="form-group">
+            <label for="name" class="cols-sm-2 control-label">Full name</label>
+            <div class="cols-sm-10">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                    </div>
+                    <input type="text" class="form-control" name="full_name" id="full_name"  value="{{ user.full_name }}"/>
+                </div>
+            </div>
+        </div>
+        
+        
+
+        <div class="form-group">
+            <label for="email" class="cols-sm-2 control-label">Description</label>
+            <div class="cols-sm-10">
+                <div class="input-group">
+                    <textarea class="form-control" rows="4" cols="50" name="description" id="description">{{ user.description }}</textarea>
+                </div>
+            </div>
+        </div>
+
+        
+
+
+        <div align="center">
+            <input class="form-control" type="submit" value="Update" />
+        </div>
+    </form>
+</div>
+
+
+<div class="main-login main-center" style="margin-top:40px;margin-bottom:100px; max-width:600px;">
+    <form class="form-horizontal" method="post" action="update_password">
+        <!-- Password -->
+        <div class="form-group">
+            <label for="name" class="cols-sm-2 control-label">Password</label>
+            <div class="cols-sm-10">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                    </div>
+                    <input type="text" class="form-control" name="old_password" id="old_password"  placeholder="old password"/>
+                </div>
+            </div>
+
+            <div class="cols-sm-10">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                    </div>
+                    <input type="text" class="form-control" name="new_password" id="new_password"  placeholder="new password"/>
+                </div>
+            </div>
+
+            <div class="cols-sm-10">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                    </div>
+                    <input type="text" class="form-control" name="confirm_password" id="confirm_password"  placeholder="confirm password"/>
+                </div>
+            </div>
+        </div>
+
+        <div align="center">
+            <input class="form-control" type="submit" value="Update" />
+        </div>
+    </form>
+</div>
+
+
+</div>
+
+{% endblock %}

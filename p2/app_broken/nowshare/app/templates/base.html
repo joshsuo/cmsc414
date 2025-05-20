@@ -1,0 +1,53 @@
+<!doctype html>
+<head>
+  <title>nowshare</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel='icon' href='/static/uploads/favicon.ico' type='image/x-icon'/ >
+</head>
+
+<body>
+
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+        crossorigin="anonymous">
+<nav class="navbar navbar-light bg-white">
+    <a href="/" class="navbar-brand">nowshare</a> <span id='current_user' style="font-size: 12px;font-style: italic;">{{current_user}}</span>
+    <a href="/about">About</a>
+    <a href="/settings">Settings</a>
+    {% if session['user'] is defined %} 
+      <a href="/logout">Logout</a>
+      <form class="form-inline" method="post" action="/search">
+        
+        <div class="input-group">
+            <input type="text" class="form-control" aria-describedby="button-addon2" id="search" name="search">
+            <div class="input-group-append">
+                <input type="submit" class="btn btn-outline-primary" id="button-addon2" value="Search">
+            </div>
+        </div>
+    </form>
+    {% else %}
+      <a href="/login">Login</a>
+    {% endif %}
+    
+</nav>
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  
+  {% block content %}{% endblock %}
+</section>
+
+</body>
+<script>
+function showPassword() {
+  var x = document.getElementById("password");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+  }
+</script>

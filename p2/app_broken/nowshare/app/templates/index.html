@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+
+
+{% block content %}
+
+
+<div class="container-fluid gedf-wrapper">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="h5"><img class="rounded-circle" width="45" src="/static/uploads/{{ user.profile_pic }}" alt=""><a style="margin-left:10px;" href="/u/{{ user.username }}">{{ user.username }}</a></div>
+                    <div style="margin-left:54px;" class="h7 text-muted">{{ user.full_name }}</div>
+                    <div style="margin-left:54px;" class="h7">{{ user.description|safe }}</div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <div class="h6 text-muted">Followers {{ user.followers }} </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="h6 text-muted">Following {{ user.following }}</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6 gedf-main">
+            <div class="card gedf-card">
+                <div class="card-body">
+                    <form method="post" action="post" enctype="multipart/form-data">
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                                <div class="form-group">
+                                    <div class="custom-file">
+                                        <div class="form-group">
+                                            <script src="{{ url_for('static', filename='uploader.js') }}"></script>
+                                            <div style="position: relative;overflow: hidden;" class="file btn btn-md btn-primary">
+                                                <label>upload picture</label>
+                                                <input style="position: absolute;font-size: 50px;opacity: 0;right: 0;top: 0;" type="file" id="imgInp" name="files"><br />
+                                            </div>
+                                            <div align="center"><img id='img-upload' class="img-fluid"/></div><br />
+                                            <textarea class="form-control" id="posting" name="posting" rows="3" placeholder="caption this!"></textarea>
+                                            <br />
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="btn-toolbar justify-content-between">
+                            <div class="btn-group">
+                                <input type="submit" class="btn btn-primary" value="share">
+                            </div>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="private" name="private">
+                                    <label class="custom-control-label" for="private">private</label>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+            <br />
+            {% for post in posts%}
+            <div class="card gedf-card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="mr-2">
+                                <img class="rounded-circle" width="45" src="/static/uploads/{{ post.profile_pic }}" alt="">
+                            </div>
+                            <div class="ml-2">
+                                <div class="h5 m-0"><a href="/u{{ post.username }}">{{ post.username }}</a></div>
+                                <div class="h7 text-muted">{{ post.ts }}</div>
+                            </div>
+                        </div>
+                        <!-- <div>
+                            <div class="dropdown">
+                                <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-h"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
+                                    <div class="h6 dropdown-header">Configuration</div>
+                                    <a class="dropdown-item" href="#">Save</a>
+                                    <a class="dropdown-item" href="#">Hide</a>
+                                    <a class="dropdown-item" href="#">Report</a>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i> {{ post.time }} </div>
+                    <img src="{{ post.picture }}" class="img-fluid">
+
+
+                    <p class="card-text">
+                        {{ post.body }}
+                    </p>
+                    
+                    <div class="comments-body">
+                        Comments:
+                        {% for key, value in post.comments.items() %}
+                        <div class="comment" style="border-top: 1px solid rgba(0,0,0,.125);">
+                            <p style="margin-top: 1em;margin-bottom:0;"><b>{{ key }}</b></p>
+                            <p>{{ value }}</p>
+                        </div>
+                            
+                        {% endfor %}
+                    </div>
+                    <form method="post" action="{{ url_for('postcomment', post_id=post.post_id) }}" enctype="multipart/form-data">
+                        <div class="comment-form">
+                            <textarea class="form-control" id="comment" name="comment" rows="2" placeholder="add a comment!"></textarea>
+                        </div>
+                        <div class="btn-group">
+                            <input type="submit" class="btn btn-primary" value="share">
+                        </div>
+                    </form>
+
+                </div>
+                
+                
+            </div>
+            <br />
+
+            {% endfor%}
+
+
+
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
